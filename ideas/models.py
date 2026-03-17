@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+
 class Idea(models.Model):
 
     class Category(models.TextChoices):
