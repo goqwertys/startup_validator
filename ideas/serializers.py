@@ -5,6 +5,7 @@ from .models import Idea
 class IdeaSerializer(serializers.ModelSerializer):
 
     creator = serializers.ReadOnlyField(source='creator.email')
+    score = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Idea
@@ -14,5 +15,6 @@ class IdeaSerializer(serializers.ModelSerializer):
             'description',
             'category',
             'creator',
+            'score',
             'created_at'
         )
