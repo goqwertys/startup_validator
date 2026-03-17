@@ -6,7 +6,7 @@ class Vote(models.Model):
 
     class VoteType(models.IntegerChoices):
         UP = 1, 'Upvote',
-        DOWN = 2, 'Downvote'
+        DOWN = -1, 'Downvote'
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
