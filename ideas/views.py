@@ -1,5 +1,5 @@
-from django.db.models import Sum
-from django.db.models.functions import Coalesce
+from django.db.models import Sum, ExpressionWrapper, F, FloatField, DurationField
+from django.db.models.functions import Coalesce, Now
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -27,6 +27,18 @@ class IdeaViewSet(ModelViewSet):
     def get_queryset(self):
         return (
             Idea.objects
-            .annotate(score=Coalesce(Sum('votes__value'), 0))
+            .annotate(score=Coalesce(Sum('votes__value'),0))
+            .annotate(
+                age=ExpressionWrapper(
+                    Now() - F('created_at'),
+                    output_field=DurationField()
+                )
+            )
+            .annotate(
+                trending=ExpressionWrapper(
+                    F('score')/(F('age') + 1),
+                    output_field=FloatField()
+                )
+            )
             .order_by('-created_at')
         )
