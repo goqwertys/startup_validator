@@ -1,3 +1,5 @@
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -17,7 +19,14 @@ class IdeaViewSet(ModelViewSet):
 
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = IdeaFilter
-    ordering_fields = ['created_at']
+    ordering_fields = ["created_at", "score"]
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+    def get_queryset(self):
+        return (
+            Idea.objects
+            .annotate(score=Coalesce(Sum('votes__value'), 0))
+            .order_by('-created_at')
+        )
