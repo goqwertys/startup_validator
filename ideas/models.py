@@ -28,10 +28,10 @@ class Idea(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    @property
-    def score(self):
-        result = self.votes.aggregate(total=Sum('value'))
-        return result['total'] or 0
+    # @property
+    # def score(self):
+    #     result = self.votes.aggregate(total=Sum('value'))
+    #     return result['total'] or 0
 
     def __str__(self):
         return self.title
