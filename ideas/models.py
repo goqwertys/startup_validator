@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 
 
 class Idea(models.Model):
@@ -26,6 +27,11 @@ class Idea(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def score(self):
+        result = self.votes.aggregate(total=Sum('value'))
+        return result['total'] or 0
 
     def __str__(self):
         return self.title
