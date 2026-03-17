@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'users',
+    "ideas",
+    "votes",
 
 ]
 
