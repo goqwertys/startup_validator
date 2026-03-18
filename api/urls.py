@@ -4,4 +4,5 @@ urlpatterns = [
     path('auth/', include('users.urls')),
     path('', include('ideas.urls')),
     path('', include('votes.urls')),
+    path('',include('comments.urls'))
 ]
