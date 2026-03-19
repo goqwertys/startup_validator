@@ -17,3 +17,6 @@ class CommentViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return Comment.objects.filter(parent__isnull=True).order_by("-created_at")
