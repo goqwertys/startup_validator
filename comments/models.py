@@ -27,3 +27,21 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user} -> {self.idea}'
+
+
+class CommentVote(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    comment = models.ForeignKey(
+        'Comment',
+        on_delete=models.CASCADE,
+        related_name='votes'
+    )
+
+    value = models.SmallIntegerField() # 1 or -1
+
+    class Meta:
+        unique_together = ("user", "comment")
